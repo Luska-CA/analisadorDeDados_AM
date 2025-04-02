@@ -1,0 +1,3 @@
+Esses aqui são dados ruins, ou seja, não é um arquivo CSV. O nosso programa não é capaz de analisar se não for um arquivo csv, 
+logo precisamos de um bloco que consiga pegar
+a execão gerada quando um arquivo-não-CSV for analisado!
