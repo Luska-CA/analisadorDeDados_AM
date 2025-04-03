@@ -67,8 +67,37 @@ print(f"Mediana: {dados[opcao].median()}")
 print(f"Moda: {dados[opcao].mode()[0]}")
 print(f"Desvio Padrão: {dados[opcao].std()}")
  
-#opcao = input("Selecione a coluna ")
 
-# Geração dos gráficos (Matplotlib)
+# graficos
 
+# Gráfico de dispersão: "horas de sono" x "nota final"
+plt.figure(figsize=(8, 6))  
+plt.scatter(dados['Sleep_Hours'], dados['Final_Score'])
+plt.title('Gráfico de Dispersão: Horas de Sono x Nota Final')
+plt.xlabel('Horas de Sono')
+plt.ylabel('Nota Final')
+plt.show()
+
+
+# Gráfico de barras: "idade" x "média das notas intermediárias (midterm_Score)"
+idade_midterm_mean = dados.groupby('Age')['Midterm_Score'].mean()
+plt.figure(figsize=(8, 6))
+idade_midterm_mean.plot(kind='bar', color='skyblue')
+plt.title('Gráfico de Barras: Idade x Média das Notas Intermediárias')
+plt.xlabel('Idade')
+plt.ylabel('Média das Notas Intermediárias')
+plt.xticks(rotation=0)  
+plt.show()
+
+
+# Gráfico de pizza: Idades (Agrupadas)
+idade_bins = [0, 17, 21, 24, float('inf')]  
+idade_labels = ['Até 17', '18 a 21', '22 a 24', '25 ou mais']
+dados['Age_Group'] = pd.cut(dados['Age'], bins=idade_bins, labels=idade_labels)
+
+age_group_counts = dados['Age_Group'].value_counts()
+plt.figure(figsize=(6, 6))
+plt.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', startangle=90)
+plt.title('Gráfico de Pizza: Distribuição de Idades')
+plt.show()
 # Funções
