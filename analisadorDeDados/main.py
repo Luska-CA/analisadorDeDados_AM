@@ -40,9 +40,9 @@ except ValueError as erroInput: # recebendo ValueError
 # Limpeza de dados
 dados.dropna(subset=['Parent_Education_Level'], inplace=True)
 
-dados['Attendance'].fillna(dados['Attendance'].median(), inplace=True)
+dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True)
 
-attendance_sum = dados['Attendance'].sum()
+attendance_sum = dados['Attendance (%)'].sum()
 
 print(f"O somatório da presença: {attendance_sum}")
 
