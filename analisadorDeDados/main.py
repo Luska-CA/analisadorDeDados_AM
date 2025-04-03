@@ -38,11 +38,9 @@ except ValueError as erroInput: # recebendo ValueError
     print(f"Erro: {erroInput}")
 
 # Limpeza de dados
-dados.dropna(subset=['Parent_Education_Level'] inplace= true)
+dados.dropna(subset=['Parent_Education_Level'], inplace=True)
 
-median_attendance = dados['Attendance'].median()
-
-dados['Attendance'] = dados['Attendance'].fillna(median_attendance)
+dados['Attendance'].fillna(dados['Attendance'].median(), inplace=True)
 
 attendance_sum = dados['Attendance'].sum()
 
