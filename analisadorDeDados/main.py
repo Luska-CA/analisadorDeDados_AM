@@ -13,7 +13,6 @@ try:
 
     dados = pd.read_csv(caminho_arquivo)
 
-# resumo estatístico
     print("---------------Resumo estatístico: ---------------")
     # contando número de homens e mulheres na coluna 'Gender'
     coluna_genero = dados['Gender']
@@ -46,7 +45,6 @@ dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True)
 
 print(f"O somatório da presença: {dados['Attendance (%)'].sum()}")
 
-# Consulta aos dados
 print("---------------Consulta de dados: ---------------")
 colunas_numericas = dados.select_dtypes(include=['number']).columns # seleciona apenas as colunas numéricas do arquivo
 
@@ -66,9 +64,8 @@ print(f"Média: {dados[opcao].mean()}")
 print(f"Mediana: {dados[opcao].median()}")
 print(f"Moda: {dados[opcao].mode()[0]}")
 print(f"Desvio Padrão: {dados[opcao].std()}")
- 
-#opcao = input("Selecione a coluna ")
 
 # Geração dos gráficos (Matplotlib)
+
 
 # Funções
