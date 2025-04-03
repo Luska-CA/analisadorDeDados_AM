@@ -1,6 +1,6 @@
 # importando bibliotecas
 import pandas as pd
-import matplotlib as mpl
+import matplotlib as plt
 
 
 # Recebendo arquivo CSV com dados de alunos
@@ -13,7 +13,8 @@ try:
 
     dados = pd.read_csv(caminho_arquivo)
 
-    # resumo estatístico
+# resumo estatístico
+    print("---------------Resumo estatístico: ---------------")
     # contando número de homens e mulheres na coluna 'Gender'
     coluna_genero = dados['Gender']
     count_Male = 0
@@ -28,6 +29,8 @@ try:
     print(f"O arquivo {caminho_arquivo} tem {len(dados)} entradas,")
     print(f"onde {count_Male} são homens e {count_Female} são mulheres.")
     print(f"A coluna ['Parent_Education_Level'] tem {count_vazio_PEL} registros vazios.")
+    print("--------------------------------------------------")
+    input("Pressione Enter para continuar...")
     
 
 except FileNotFoundError:
@@ -39,14 +42,32 @@ except ValueError as erroInput: # recebendo ValueError
 
 # Limpeza de dados
 dados.dropna(subset=['Parent_Education_Level'], inplace=True)
-
 dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True)
 
-attendance_sum = dados['Attendance (%)'].sum()
-
-print(f"O somatório da presença: {attendance_sum}")
+print(f"O somatório da presença: {dados['Attendance (%)'].sum()}")
 
 # Consulta aos dados
+print("---------------Consulta de dados: ---------------")
+colunas_numericas = dados.select_dtypes(include=['number']).columns # seleciona apenas as colunas numéricas do arquivo
+
+for coluna in colunas_numericas:
+    print("- " + coluna)
+
+opcao = input("Digite o nome da coluna que deseja analisar: ")
+
+while opcao not in colunas_numericas:
+    print("---------------Opção inválida! Tente novamente.---------------")
+    for coluna in colunas_numericas:
+        print("- " + coluna)
+    opcao = input("Digite o nome da coluna que deseja analisar: ")
+        
+print(f"---------------Estatísticas da coluna {opcao}: ---------------")
+print(f"Média: {dados[opcao].mean()}")
+print(f"Mediana: {dados[opcao].median()}")
+print(f"Moda: {dados[opcao].mode()[0]}")
+print(f"Desvio Padrão: {dados[opcao].std()}")
+ 
+#opcao = input("Selecione a coluna ")
 
 # Geração dos gráficos (Matplotlib)
 
