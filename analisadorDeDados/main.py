@@ -2,7 +2,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 # Recebendo arquivo CSV com dados de alunos
 caminho_arquivo = input("Entre com o caminho do arquivo a ser manejado: ")
 
@@ -16,17 +15,17 @@ try:
     print("---------------Resumo estatístico: ---------------")
     # contando número de homens e mulheres na coluna 'Gender'
     coluna_genero = dados['Gender']
-    count_Male = 0
-    count_Female = 0
+    count_male = 0
+    count_female = 0
     for item in coluna_genero:
-        if item == 'Male': count_Male+= 1
-        elif item == 'Female': count_Female+= 1
+        if item == 'Male': count_male+= 1
+        elif item == 'Female': count_female+= 1
 
     # contando número de registros vazios na coluna 'Parent_Education_Level'
     count_vazio_PEL = dados['Parent_Education_Level'].isna().sum()
 
     print(f"1. O arquivo {caminho_arquivo} tem {len(dados)} entradas,")
-    print(f"2 .onde {count_Male} são homens e {count_Female} são mulheres.")
+    print(f"2 .onde {count_male} são homens e {count_female} são mulheres.")
     print(f"3. A coluna ['Parent_Education_Level'] tem {count_vazio_PEL} registros vazios.")
     print("--------------------------------------------------")
     input("Pressione Enter para continuar...")
