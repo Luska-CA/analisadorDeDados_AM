@@ -1,9 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import pandas as pd
-import matplotlib.pyplot as plt
-
 def analisadorDeDados():
     # Solicita o caminho do arquivo CSV com dados de alunos
     caminho_arquivo = input("Entre com o caminho do arquivo a ser manejado: ")
