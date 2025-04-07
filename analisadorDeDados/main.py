@@ -1,6 +1,6 @@
 # importando bibliotecas
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 
 # Recebendo arquivo CSV com dados de alunos
@@ -25,9 +25,9 @@ try:
     # contando número de registros vazios na coluna 'Parent_Education_Level'
     count_vazio_PEL = dados['Parent_Education_Level'].isna().sum()
 
-    print(f"O arquivo {caminho_arquivo} tem {len(dados)} entradas,")
-    print(f"onde {count_Male} são homens e {count_Female} são mulheres.")
-    print(f"A coluna ['Parent_Education_Level'] tem {count_vazio_PEL} registros vazios.")
+    print(f"1. O arquivo {caminho_arquivo} tem {len(dados)} entradas,")
+    print(f"2 .onde {count_Male} são homens e {count_Female} são mulheres.")
+    print(f"3. A coluna ['Parent_Education_Level'] tem {count_vazio_PEL} registros vazios.")
     print("--------------------------------------------------")
     input("Pressione Enter para continuar...")
     
@@ -70,8 +70,8 @@ print(f"Desvio Padrão: {dados[opcao].std()}")
 # Geração dos gráficos (Matplotlib)
 
 # Gráfico de dispersão: "horas de sono" x "nota final"
-plt.figure(figsize=(8, 6))  
-plt.scatter(dados['Sleep_Hours'], dados['Final_Score'])
+plt.figure(figsize=(8, 6))
+plt.scatter(dados['Sleep_Hours_per_Night'], dados['Final_Score'])
 plt.title('Gráfico de Dispersão: Horas de Sono x Nota Final')
 plt.xlabel('Horas de Sono')
 plt.ylabel('Nota Final')
@@ -96,8 +96,9 @@ dados['Age_Group'] = pd.cut(dados['Age'], bins=idade_bins, labels=idade_labels)
 
 age_group_counts = dados['Age_Group'].value_counts()
 plt.figure(figsize=(6, 6))
-plt.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', startangle=90)
+plt.pie(age_group_counts, autopct='%1.1f%%', startangle=90)
+plt.legend(age_group_counts.index, loc="lower left")
 plt.title('Gráfico de Pizza: Distribuição de Idades')
 plt.show()
 
-# Funções
+print("---------------FIM DO PROGRAMA---------------")
