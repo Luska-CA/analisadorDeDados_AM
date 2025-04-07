@@ -1,7 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
+
+def logApp(nome, coluna):
+    horario = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    try:
+        f = open("log_usuario.txt", "a")
+        f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
+    except FileNotFoundError:
+        print("Arquivo de log não encontrado! Criando um novo...")
+        f = open ("log_usuario.txt","w")
+        f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
 
 def analisadorDeDados():
+    # Recebendo o nome do usuário para o log
+    nome_usuario = input("Entre com o seu nome: ")
+    while len(nome_usuario) < 3:
+        print("Seu nome precisa ter ao menos 3 caracteres!")
+        nome_usuario = input("Entre com seu nome novamente: ")
+        
     # Solicita o caminho do arquivo CSV com dados de alunos
     caminho_arquivo = input("Entre com o caminho do arquivo a ser manejado: ")
 
@@ -109,6 +126,9 @@ def analisadorDeDados():
     plt.legend(age_group_counts.index, loc="lower left")
     plt.title('Gráfico de Pizza: Distribuição de Idades')
     plt.show()
+    
+    # Marcando nome no log
+    logApp(nome_usuario, opcao)
 
     print("--------------- FIM DO PROGRAMA ---------------")
     
