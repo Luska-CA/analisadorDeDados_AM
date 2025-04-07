@@ -1,49 +1,41 @@
+import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
-import datetime
 
-def logApp(nome, coluna):
+
+def log_app(nome, coluna):
     horario = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     try:
-        f = open("log_usuario.txt", "a")
-        f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
+        with open("log_usuario.txt", "a") as f:
+            f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
     except FileNotFoundError:
         print("Arquivo de log não encontrado! Criando um novo...")
-        f = open ("log_usuario.txt","w")
-        f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
+        with open("log_usuario.txt", "w") as f:
+            f.write(f"{horario} | {nome} - checagem na coluna: {coluna}\n")
 
-def analisadorDeDados():
-    # Recebendo o nome do usuário para o log
+
+def analisador_de_dados():
+    # Recebe o nome do usuário
     nome_usuario = input("Entre com o seu nome: ")
     while len(nome_usuario) < 3:
         print("Seu nome precisa ter ao menos 3 caracteres!")
         nome_usuario = input("Entre com seu nome novamente: ")
-        
-    # Solicita o caminho do arquivo CSV com dados de alunos
+
+    # Solicita caminho do arquivo
     caminho_arquivo = input("Entre com o caminho do arquivo a ser manejado: ")
 
     try:
-        # Verifica se o arquivo é um CSV
         if not caminho_arquivo.lower().endswith('.csv'):
             raise ValueError("O arquivo deve ser um arquivo CSV.")
 
-        # Lê os dados do arquivo
         dados = pd.read_csv(caminho_arquivo)
 
         print("--------------- Resumo estatístico: ---------------")
 
-        # Conta número de homens e mulheres na coluna 'Gender'
         coluna_genero = dados['Gender']
-        count_male = 0
-        count_female = 0
+        count_male = (coluna_genero == 'Male').sum()
+        count_female = (coluna_genero == 'Female').sum()
 
-        for item in coluna_genero:
-            if item == 'Male':
-                count_male += 1
-            elif item == 'Female':
-                count_female += 1
-
-        # Conta registros vazios na coluna 'Parent_Education_Level'
         count_vazio_pel = dados['Parent_Education_Level'].isna().sum()
 
         print(f"1. O arquivo {caminho_arquivo} tem {len(dados)} entradas.")
@@ -55,31 +47,29 @@ def analisadorDeDados():
 
     except FileNotFoundError:
         print(f"Erro: arquivo {caminho_arquivo} não encontrado. Tente novamente!")
-        analisadorDeDados()
+        return analisador_de_dados()
 
     except pd.errors.ParserError:
-        print(f"Erro: não conseguimos analisar o arquivo {caminho_arquivo}. Verifique se é um CSV válido!")
-        analisadorDeDados()
+        print("Erro: não conseguimos analisar o arquivo. Verifique se é um CSV válido!")
+        return analisador_de_dados()
+
     except ValueError as erro_input:
         print(f"Erro: {erro_input}")
-        analisadorDeDados()
+        return analisador_de_dados()
 
     # Limpeza de dados
     dados.dropna(subset=['Parent_Education_Level'], inplace=True)
     dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True)
 
-    # Soma da presença
     print(f"O somatório da presença: {dados['Attendance (%)'].sum()}")
 
     print("--------------- Consulta de dados: ---------------")
 
-    # Seleciona colunas numéricas
     colunas_numericas = dados.select_dtypes(include=['number']).columns
 
     for coluna in colunas_numericas:
         print(f"- {coluna}")
 
-    # Solicita coluna para análise
     opcao = input("Digite o nome da coluna que deseja analisar: ")
 
     while opcao not in colunas_numericas:
@@ -88,14 +78,13 @@ def analisadorDeDados():
             print(f"- {coluna}")
         opcao = input("Digite o nome da coluna que deseja analisar: ")
 
-    # Estatísticas da coluna escolhida
     print(f"--------------- Estatísticas da coluna {opcao}: ---------------")
     print(f"Média: {dados[opcao].mean()}")
     print(f"Mediana: {dados[opcao].median()}")
     print(f"Moda: {dados[opcao].mode()[0]}")
     print(f"Desvio Padrão: {dados[opcao].std()}")
 
-    # Gráfico de dispersão: "Horas de Sono" x "Nota Final"
+    # Gráfico de dispersão
     plt.figure(figsize=(8, 6))
     plt.scatter(dados['Sleep_Hours_per_Night'], dados['Final_Score'])
     plt.title('Gráfico de Dispersão: Horas de Sono x Nota Final')
@@ -103,7 +92,7 @@ def analisadorDeDados():
     plt.ylabel('Nota Final')
     plt.show()
 
-    # Gráfico de barras: "Idade" x "Média das Notas Intermediárias"
+    # Gráfico de barras
     idade_midterm_mean = dados.groupby('Age')['Midterm_Score'].mean()
 
     plt.figure(figsize=(8, 6))
@@ -114,7 +103,7 @@ def analisadorDeDados():
     plt.xticks(rotation=0)
     plt.show()
 
-    # Gráfico de pizza: Distribuição de Idades
+    # Gráfico de pizza
     idade_bins = [0, 17, 21, 24, float('inf')]
     idade_labels = ['Até 17', '18 a 21', '22 a 24', '25 ou mais']
     dados['Age_Group'] = pd.cut(dados['Age'], bins=idade_bins, labels=idade_labels)
@@ -126,10 +115,12 @@ def analisadorDeDados():
     plt.legend(age_group_counts.index, loc="lower left")
     plt.title('Gráfico de Pizza: Distribuição de Idades')
     plt.show()
-    
-    # Marcando nome no log
-    logApp(nome_usuario, opcao)
+
+    # Registra no log
+    log_app(nome_usuario, opcao)
 
     print("--------------- FIM DO PROGRAMA ---------------")
-    
-analisadorDeDados()
+
+
+if __name__ == "__main__":
+    analisador_de_dados()
