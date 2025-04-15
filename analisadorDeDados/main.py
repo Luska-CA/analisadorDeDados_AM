@@ -59,7 +59,8 @@ def analisador_de_dados():
 
     # Limpeza de dados
     dados.dropna(subset=['Parent_Education_Level'], inplace=True)
-    dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True)
+    # dados['Attendance (%)'].fillna(dados['Attendance (%)'].median(), inplace=True) Mudamos a sintaxe pois o pandas implicava com a versão
+    dados['Attendance (%)'] = dados['Attendance (%)'].fillna(dados['Attendance (%)'].median())
 
     print(f"O somatório da presença: {dados['Attendance (%)'].sum()}")
 
