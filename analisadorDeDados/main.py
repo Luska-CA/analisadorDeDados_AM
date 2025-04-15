@@ -122,6 +122,4 @@ def analisador_de_dados():
 
     print("--------------- FIM DO PROGRAMA ---------------")
 
-
-if __name__ == "__main__":
-    analisador_de_dados()
+analisador_de_dados()
